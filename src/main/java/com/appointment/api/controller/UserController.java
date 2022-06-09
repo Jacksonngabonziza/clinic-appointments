@@ -76,15 +76,12 @@ public class UserController {
 		user = userService.validateUser(email, password);
 		Map<String, Object> data = new HashMap<String, Object>();
 
-		// data.put("User", user);
-		// System.out.print(user);
+		
 		data.putAll(generateJWTToken(user));
-		// String tok = token;
+	
 
 		userRepository.setStatusForUser(1, user.getEmail());
-		// userService.UpdateUser(user);
-		// System.out.println("my data are :" + data);
-		// System.out.println("my token is :" + tok);
+		
 		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
 
@@ -101,28 +98,22 @@ public class UserController {
 			throws javax.security.auth.message.AuthException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("User", user);
-		// System.out.print(user);
-		// data.putAll(generateJWTToken(user));
+		
 		String useremail = request.getAttribute("email").toString();
 		Integer stat = userRepository.findstatusbyemail(useremail);
 		if (stat == 1) {
 
-			// String tok = token;
-			// logsService.logout(user);
-
 			User userr = userRepository.findByEmailAddress(useremail);
 			userRepository.setStatusForUser(0, userr.getEmail());
-			// userService.UpdateUser(user);
-			// System.out.println("my data are :" + data);
-			// System.out.println("my token is :" + tok);
+
 			data.put("User", userr);
-			// System.out.print(user);
+			
 			data.putAll(generateJWTToken(userr));
 			return "Hello  " + userr.getFirstName() + " You Logged out successfully";
 		} else {
 			return "No user logged in";
 		}
-		// new ResponseEntity<>(data, HttpStatus.OK);
+		
 	}
 
 	@Operation(summary = "This is to  signup  to  the system for new users")
@@ -146,7 +137,7 @@ public class UserController {
 
 	private Map<String, String> generateJWTToken(User user) {
 		long timestamp = System.currentTimeMillis();
-		// System.out.print("current user role:" + user.getRole());
+
 		token = Jwts.builder().signWith(SignatureAlgorithm.HS256,
 				Constants.API_SECRET_KEY)
 				.setIssuedAt(new Date(timestamp))
@@ -156,13 +147,13 @@ public class UserController {
 				.claim("firstName", user.getFirstName())
 				.claim("lastName", user.getLastName())
 				.claim("role", user.getRole())
-				// .claim("status", user.getstatus())
+			
 				.compact();
 		Map<String, String> map = new HashMap<>();
 		map.put("token", token);
 		return map;
 	}
-	// 0:client,1:agents,3:staff,4:admin
+
 
 	@Operation(summary = "This is to  set role to  system  user", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
@@ -172,7 +163,7 @@ public class UserController {
 			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })
 	@SecurityRequirement(name = "bearerAuth")
 	@PutMapping("/setrole/{email}")
-	public ResponseEntity<User> updateuser(HttpServletRequest request,
+	public String updateuser(HttpServletRequest request,
 			@PathVariable(value = "email") String email,
 			@Valid @RequestBody User userDetails) {
 
@@ -195,10 +186,8 @@ public class UserController {
 			final User updateappointmentser = userRepository.save(user);
 			String activity = "Updated " + email + "'s role";
 			String useremail = request.getAttribute("email").toString();
-			// System.out.println(" user email : " +
-			// request.getAttribute("email").toString());
-			// logsService.savelog(useremail, activity);
-			return ResponseEntity.ok(updateappointmentser);
+		
+			return "User role updated successfully";
 
 		} else {
 
@@ -216,12 +205,12 @@ public class UserController {
 	@SecurityRequirement(name = "bearerAuth")
 
 	@PutMapping("update/{email}")
-	public ResponseEntity<User> updateuserdata(HttpServletRequest request,
+	public String updateuserdata(HttpServletRequest request,
 			@PathVariable(value = "email") String email,
 			@Valid @RequestBody User userDetails) {
 
 		String role = request.getAttribute("role").toString();
-		System.out.println("role: --------  " + role);
+		
 		int i = Integer.parseInt(role);
 		if (i == 4) {
 
@@ -234,16 +223,12 @@ public class UserController {
 			user.setLastName(userDetails.getLastName() != null ? userDetails.getLastName() : user.getLastName());
 			user.setEmail(userDetails.getEmail() != null ? userDetails.getEmail() : user.getEmail());
 			user.setPassword(userDetails.getPassword() != null ? userDetails.getPassword() : user.getPassword());
-			// user.setRole(userDetails.getRole()!=null ?
-			// userDetails.getRole():user.getRole());
+			
 			user.setstatus(userDetails.getstatus() != null ? userDetails.getstatus() : user.getstatus());
 			final User updateappointmentser = userRepository.save(user);
-			// String activity = "Updated " + email + "'s data";
-			// String useremail = request.getAttribute("email").toString();
-			// System.out.println(" user email : " +
-			// request.getAttribute("email").toString());
 
-			return ResponseEntity.ok(updateappointmentser);
+
+			return "User updated successfully";
 
 		} else {
 

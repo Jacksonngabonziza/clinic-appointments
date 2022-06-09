@@ -45,9 +45,8 @@ public class AppointmentController {
 	@Autowired
 	UserService Uservice;
 			  
-	// @Autowired
+
 	User user;
-	// Logger log = LoggerFactory.getLogger(AppointmentController.class);
 
 	@Operation(summary = "create a new appoint ", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
@@ -58,11 +57,11 @@ public class AppointmentController {
 
 	@PostMapping("/requestapp")
 	public String createaAppointment(@Valid @RequestBody appointment appointment) {
-		// String role = request.getAttribute("role").toString();
-		// System.out.println("role: -------- " + role);
+		
+		
 		Date d = appointment.getschedule_time();
 		appointment app = appRepository.findAppointmentByDate(d);
-		System.out.print("date equals ######################################" + d);
+		
 		if (app == null) {
 			appRepository.save(appointment);
 			return "Appointment saved waiting for approval";
@@ -91,8 +90,7 @@ public class AppointmentController {
 	public List<appointment> getAllAppointments(HttpServletRequest request)
 			throws javax.security.auth.message.AuthException {
 		String role = request.getAttribute("role").toString();
-		// String email = request.getAttribute("email").toString();
-		// System.out.println("role: -------- " + role);
+		
 		int i = Integer.parseInt(role);
 		if (i == 4) {
 
@@ -114,7 +112,7 @@ public class AppointmentController {
 			@PathVariable(value = "id") Long id)
 			throws Exception {
 		String role = request.getAttribute("role").toString();
-		// System.out.println("role: -------- " + role);
+	
 		int i = Integer.parseInt(role);
 		if (i == 4) {
 			appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
@@ -164,17 +162,17 @@ public class AppointmentController {
 	public Map<String, Boolean> deletapp(HttpServletRequest request, @PathVariable(value = "id") Long id)
 			throws Exception {
 		String role = request.getAttribute("role").toString();
-		// System.out.println("role: -------- " + role);
+		
 		int i = Integer.parseInt(role);
 		if (i == 4) {
 			appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
-			// String useremail = request.getAttribute("email").toString();
+			
 
 			appRepository.delete(app);
 			Map<String, Boolean> response = new HashMap<>();
 			response.put("deleted", Boolean.TRUE);
 			String activity = "deleted appointment: " + id;
-			// logsService.savelog(useremail, activity);
+			
 			return response;
 		} else {
 			throw new AuthException("Only admin and  can delete appointment data :: ");
@@ -192,12 +190,12 @@ public class AppointmentController {
 	public Map<String, Boolean> approve(HttpServletRequest request, @PathVariable(value = "id") Long id)
 			throws Exception {
 		String role = request.getAttribute("role").toString();
-		// System.out.println("role: -------- " + role);
+		
 		int i = Integer.parseInt(role);
 		Map<String, Boolean> response = new HashMap<>();
 		if (i == 4) {
 			appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
-			// String useremail = request.getAttribute("email").toString();
+			
 			if (app.getstatus().equals("pending")) {
 				appRepository.approve("approved", id);
 
@@ -205,12 +203,12 @@ public class AppointmentController {
 
 			} else {
 
-				// appRepository.approve("approved", id);
+				
 
 				response.put("Appointment is already approved", Boolean.TRUE);
 			}
 
-			// logsService.savelog(useremail, activity);
+			
 			return response;
 		} else {
 			throw new AuthException("Only admin and  can delete appointment data :: ");

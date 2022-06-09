@@ -27,30 +27,13 @@ public class UserService {
                 throw new AuthException("Invalid email or password");
             }
 
-            // System.out.println("userfound: " + userFound.getFirstName());
+            
             return userFound;
 
         } catch (Exception e) {
             throw new AuthException("Invalid email or password");
         }
     }
-
-    // public User logsdata(String email) {
-
-    // email = email.toLowerCase();
-
-    // User userdata = userRepository.findByEmailAddress(email);
-    // // System.out.print("my desired data are: " + userdata);
-    // String em = userdata.getEmail();
-    // String ftName = userdata.getFirstName();
-    // String lname = userdata.getLastName();
-    // int rol = userdata.getRole();
-    // System.out.println(em);
-    // System.out.println(ftName);
-    // System.out.println(lname);
-    // System.out.println(rol);
-    // return userdata;
-    // }
 
     public User registerUser(User user) throws AuthException {
         Pattern pattern = Pattern.compile("^(.+)@(.+)$");
@@ -67,28 +50,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String getDayMonthYear(Date date)
-    {
- 
-        // Get an instance of LocalTime
-        // from date
-        
- 
-        // Get day from date
-        int day = date.getMonth();
- 
-        // Get month from date
-        int month = date.getMonth();
- 
-        // Get year from date
-        int year = date.getYear();
- 
-        // Print the day, month, and year
-        // System.out.println("Day: " + day);
-        // System.out.println("Month: " + month);
-        // System.out.println("Year: " + year);
-        return day+"/"+month+"/"+year;
-    }
+   
 
 
 

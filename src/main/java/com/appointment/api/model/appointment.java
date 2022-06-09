@@ -10,10 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 //import javax.validation.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.Hidden;
 
-@Hidden
+//@Hidden
 @Entity
 @Table(name = "appointment")
 public class appointment extends AuditModel {
@@ -23,6 +25,7 @@ public class appointment extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -40,8 +43,9 @@ public class appointment extends AuditModel {
 
     private Date schedule_time;
 
-    @Column(name = "status",nullable =false)
-    private String status="pending";
+    @Column(name = "status", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String status = "pending";
 
     public appointment() {
         super();
@@ -69,7 +73,7 @@ public class appointment extends AuditModel {
         return service;
     }
 
-    public void setocccupation(String service) {
+    public void setservice(String service) {
         this.service = service;
     }
 
@@ -109,6 +113,7 @@ public class appointment extends AuditModel {
         this.phoneNumber = phoneNumber;
     }
 
+    @JsonIgnore
     public String getstatus() {
         return status;
     }

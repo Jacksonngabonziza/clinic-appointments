@@ -8,9 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.v3.oas.annotations.Hidden;
 
-@Hidden
+// @Hidden
 @Entity
 @Table(name = "users")
 public class User extends AuditModel {
@@ -18,6 +21,7 @@ public class User extends AuditModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
+	@JsonIgnore
 	private Long id;
 
 	@Column(name = "first_name", nullable = false, length = 20)
@@ -31,12 +35,15 @@ public class User extends AuditModel {
 	private String email;
 
 	@Column(name = "password", nullable = false, length = 64)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 
 	@Column(name = "role", length = 1, columnDefinition = "integer default 0")
+	@JsonIgnore
 	private int role;
 
-	@Column(name = "status", nullable = true)
+	@Column(name = "status", nullable = true, columnDefinition = "integer default 0")
+	@JsonIgnore
 	private Integer status;
 
 	public User() {
@@ -53,6 +60,7 @@ public class User extends AuditModel {
 	}
 
 	public Long getId() {
+
 		return id;
 	}
 

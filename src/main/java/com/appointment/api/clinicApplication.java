@@ -56,10 +56,10 @@ public class clinicApplication {
         AuthFilter authFilter = new AuthFilter();
         registrationBean.setFilter(authFilter);
         registrationBean.addUrlPatterns(
-      
-                
-        "/api/v1/User/setrole/*",
-               "/api/v1/appointment/*",
+
+                "/api/v1/User/setrole/*",
+                "/api/v1/User/update/*",
+                "/api/v1/appointment/*",
                 "/api/v1/User/logout");
         return registrationBean;
     }
