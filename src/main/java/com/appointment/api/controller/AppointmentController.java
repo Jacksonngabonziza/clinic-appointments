@@ -3,6 +3,7 @@ package com.appointment.api.controller;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.appointment.api.exception.ResourceNotFoundException;
 import com.appointment.api.model.appointment;
 import com.appointment.api.model.User;
 import com.appointment.api.repository.AppointmentRepository;
+import com.appointment.api.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +42,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class AppointmentController {
 	@Autowired
 	private AppointmentRepository appRepository;
-
+	@Autowired
+	UserService Uservice;
+			  
 	// @Autowired
 	User user;
 	// Logger log = LoggerFactory.getLogger(AppointmentController.class);
@@ -57,15 +61,21 @@ public class AppointmentController {
 		// String role = request.getAttribute("role").toString();
 		// System.out.println("role: -------- " + role);
 		Date d = appointment.getschedule_time();
-		appointment app=appRepository.findAppointmentByDate(d);
-		//System.out.print("date equals ######################################" + d);
-		if(app==null){
+		appointment app = appRepository.findAppointmentByDate(d);
+		System.out.print("date equals ######################################" + d);
+		if (app == null) {
 			appRepository.save(appointment);
-           return "Appointment saved waiting for approval";
-		}
-		else{
+			return "Appointment saved waiting for approval";
+		} else {
+			String day=d.toString();
+			String dy="";
+			for(int i=0;i<10;i++){
+             dy=dy+ day.charAt(i);
 
-			return "Doctor is busy on this day";
+			}
+	        
+
+			return "Doctor is busy on this day   "+dy;
 		}
 
 	}
@@ -108,7 +118,7 @@ public class AppointmentController {
 		int i = Integer.parseInt(role);
 		if (i == 4) {
 			appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
-		
+
 			return ResponseEntity.ok().body(app);
 		} else {
 
@@ -117,10 +127,6 @@ public class AppointmentController {
 		}
 
 	}
-
-
-
-
 
 	@Operation(summary = "This is to the check the status of your appoint by entering phonenumber", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
@@ -133,13 +139,12 @@ public class AppointmentController {
 	public String getappointmentById(HttpServletRequest request,
 			@PathVariable(value = "phoneNumber") String phoneNumber)
 			throws Exception {
-	
-			appointment app = appRepository.findAppointmentByPhone(phoneNumber);
-			if(app==null){
 
-				return "no appointment assigned to this phone number";
-			
-			
+		appointment app = appRepository.findAppointmentByPhone(phoneNumber);
+		if (app == null) {
+
+			return "no appointment assigned to this phone number";
+
 		} else {
 
 			return app.getstatus();
@@ -147,12 +152,6 @@ public class AppointmentController {
 		}
 
 	}
-
-
-
-
-
-
 
 	@Operation(summary = "This is to delelte  appointment from the  Database", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
@@ -162,14 +161,15 @@ public class AppointmentController {
 			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })
 
 	@DeleteMapping("/appointment/{id}")
-	public Map<String, Boolean> deletapp(HttpServletRequest request, @PathVariable(value = "id") Long id) throws Exception {
+	public Map<String, Boolean> deletapp(HttpServletRequest request, @PathVariable(value = "id") Long id)
+			throws Exception {
 		String role = request.getAttribute("role").toString();
 		// System.out.println("role: -------- " + role);
 		int i = Integer.parseInt(role);
 		if (i == 4) {
-	appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
+			appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
 			// String useremail = request.getAttribute("email").toString();
-			
+
 			appRepository.delete(app);
 			Map<String, Boolean> response = new HashMap<>();
 			response.put("deleted", Boolean.TRUE);
@@ -181,10 +181,6 @@ public class AppointmentController {
 		}
 	}
 
-
-
-
-
 	@Operation(summary = "This is to approve an appointment only done by admin", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "approve  appointment", content = {
@@ -193,7 +189,8 @@ public class AppointmentController {
 			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })
 
 	@PutMapping("/appointment/{id}")
-	public Map<String, Boolean> approve(HttpServletRequest request, @PathVariable(value = "id") Long id) throws Exception {
+	public Map<String, Boolean> approve(HttpServletRequest request, @PathVariable(value = "id") Long id)
+			throws Exception {
 		String role = request.getAttribute("role").toString();
 		// System.out.println("role: -------- " + role);
 		int i = Integer.parseInt(role);
@@ -201,19 +198,17 @@ public class AppointmentController {
 		if (i == 4) {
 			appointment app = appRepository.findById(id).orElseThrow(() -> new Exception("Appointment not found"));
 			// String useremail = request.getAttribute("email").toString();
-		  if(app.getstatus().equals("pending")){
-			appRepository.approve("approved", id);
-			
-			response.put("Appointmenr approved", Boolean.TRUE);
+			if (app.getstatus().equals("pending")) {
+				appRepository.approve("approved", id);
 
-		  }
-		  else{
+				response.put("Appointmenr approved", Boolean.TRUE);
 
-			//appRepository.approve("approved", id);
-			
-			response.put("Appointment is already approved", Boolean.TRUE);
-		  }
-			
+			} else {
+
+				// appRepository.approve("approved", id);
+
+				response.put("Appointment is already approved", Boolean.TRUE);
+			}
 
 			// logsService.savelog(useremail, activity);
 			return response;
@@ -221,5 +216,33 @@ public class AppointmentController {
 			throw new AuthException("Only admin and  can delete appointment data :: ");
 		}
 	}
+
+	@Operation(summary = "This is to fetch all appointments from the  Database", security = @SecurityRequirement(name = "bearerAuth"))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "fetch all appointments from the  Database", content = {
+					@Content(mediaType = "application/json") }),
+			@ApiResponse(responseCode = "404", description = "NOt Available", content = @Content),
+			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })
+
+	@GetMapping("/booked")
+	public List<String> getAllbooked()
+
+	{    
+ List<appointment> app=appRepository.findAll();
+ List<String> booked=new ArrayList<>();
+ String temp;
+ for (int b=0;b<app.size();b++){
+     
+temp=app.get(b).getschedule_time().toString();
+        String dy="";
+		String day;
+		for(int j=0;j<11;j++){
+		 dy=dy+ temp.charAt(j);
+         
+		}
+		booked.add(dy);
+}
+	return booked;
+}
 
 }

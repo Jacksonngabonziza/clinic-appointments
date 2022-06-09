@@ -1,5 +1,6 @@
 package com.appointment.api.service;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import javax.security.auth.message.AuthException;
@@ -65,5 +66,30 @@ public class UserService {
             throw new AuthException("Email already in use");
         return userRepository.save(user);
     }
+
+    public String getDayMonthYear(Date date)
+    {
+ 
+        // Get an instance of LocalTime
+        // from date
+        
+ 
+        // Get day from date
+        int day = date.getMonth();
+ 
+        // Get month from date
+        int month = date.getMonth();
+ 
+        // Get year from date
+        int year = date.getYear();
+ 
+        // Print the day, month, and year
+        // System.out.println("Day: " + day);
+        // System.out.println("Month: " + month);
+        // System.out.println("Year: " + year);
+        return day+"/"+month+"/"+year;
+    }
+
+
 
 }

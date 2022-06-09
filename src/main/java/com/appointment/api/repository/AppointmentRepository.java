@@ -25,6 +25,11 @@ public interface AppointmentRepository extends JpaRepository<appointment, Long> 
    @Query("update appointment p set p.status = ?1 where p.id = ?2")
    void approve(String status, Long id);
 
+   @Transactional
+   @Modifying
+   @Query("SELECT  schedule_time from appointment")
+   List<Date> booked();
+
 
    @Query("SELECT p FROM appointment p WHERE p.schedule_time=?1")
     appointment findAppointmentByDate(Date d1);
