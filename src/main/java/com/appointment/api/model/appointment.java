@@ -8,14 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-//import javax.validation.constraints.Email;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.v3.oas.annotations.Hidden;
 
-//@Hidden
 @Entity
 @Table(name = "appointment")
 public class appointment extends AuditModel {

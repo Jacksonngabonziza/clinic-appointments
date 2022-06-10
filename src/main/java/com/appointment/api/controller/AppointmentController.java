@@ -8,20 +8,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.appointment.api.exception.AuthException;
-import com.appointment.api.exception.ResourceNotFoundException;
 import com.appointment.api.model.appointment;
 import com.appointment.api.model.User;
 import com.appointment.api.repository.AppointmentRepository;
 import com.appointment.api.service.UserService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -126,7 +121,7 @@ public class AppointmentController {
 
 	}
 
-	@Operation(summary = "This is to the check the status of your appoint by entering phonenumber", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "This is to the check the status of your appoint by entering phonenumber")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Appointment status", content = {
 					@Content(mediaType = "application/json") }),
@@ -134,7 +129,7 @@ public class AppointmentController {
 			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })
 
 	@GetMapping("/appointment/phone/{phoneNumber}")
-	public String getappointmentById(HttpServletRequest request,
+	public String getappointmentById(
 			@PathVariable(value = "phoneNumber") String phoneNumber)
 			throws Exception {
 
@@ -215,7 +210,7 @@ public class AppointmentController {
 		}
 	}
 
-	@Operation(summary = "This is to fetch all appointments from the  Database", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "This is to fetch all appointments from the  Database")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "fetch all appointments from the  Database", content = {
 					@Content(mediaType = "application/json") }),
@@ -233,7 +228,6 @@ public class AppointmentController {
      
 temp=app.get(b).getschedule_time().toString();
         String dy="";
-		String day;
 		for(int j=0;j<11;j++){
 		 dy=dy+ temp.charAt(j);
          

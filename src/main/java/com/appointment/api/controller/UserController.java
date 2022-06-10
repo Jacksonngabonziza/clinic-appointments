@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.hadoop.io.erasurecode.ECSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,9 +195,9 @@ public class UserController {
 
 	}
 
-	@Operation(summary = "This is to fetch all users from the  Database", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "This is to update user", security = @SecurityRequirement(name = "bearerAuth"))
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "fetch  all users from database", content = {
+			@ApiResponse(responseCode = "200", description = "update user", content = {
 					@Content(mediaType = "application/json") }),
 			@ApiResponse(responseCode = "404", description = "NOt Available", content = @Content),
 			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })

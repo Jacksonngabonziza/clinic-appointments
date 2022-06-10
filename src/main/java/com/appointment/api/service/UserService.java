@@ -1,6 +1,5 @@
 package com.appointment.api.service;
 
-import java.util.Date;
 import java.util.regex.Pattern;
 
 import javax.security.auth.message.AuthException;
