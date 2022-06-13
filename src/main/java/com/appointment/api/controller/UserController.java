@@ -184,7 +184,7 @@ public class UserController {
 			user.setstatus(userDetails.getstatus() != null ? userDetails.getstatus() : user.getstatus());
 			final User updateappointmentser = userRepository.save(user);
 			String activity = "Updated " + email + "'s role";
-			String useremail = request.getAttribute("email").toString();
+			//String useremail = request.getAttribute("email").toString();
 		
 			return "User role updated successfully";
 

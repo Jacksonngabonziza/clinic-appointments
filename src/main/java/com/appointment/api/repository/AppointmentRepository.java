@@ -4,8 +4,6 @@ import com.appointment.api.model.appointment;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -19,6 +17,10 @@ public interface AppointmentRepository extends JpaRepository<appointment, Long> 
    appointment findappById(Long id);
    @Query("SELECT p FROM appointment p WHERE p.phoneNumber=?1")
    appointment findAppointmentByPhone(String phoneNumber);
+
+
+   @Query("SELECT p FROM appointment p WHERE p.status=?1")
+   List<appointment> pendingapp(String stat);
 
    @Transactional
    @Modifying

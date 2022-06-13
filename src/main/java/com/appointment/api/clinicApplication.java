@@ -10,20 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-//import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-
-//import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-
-import org.springframework.context.annotation.Configuration;
-
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @Configuration
 
