@@ -42,7 +42,7 @@ public class AppointmentController {
 
 	User user;
 
-	@Operation(summary = "create a new appoint ", security = @SecurityRequirement(name = "bearerAuth"))
+	@Operation(summary = "create a new appoint ")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "add new appointment to the  Database", content = {
 					@Content(mediaType = "application/json") }),
