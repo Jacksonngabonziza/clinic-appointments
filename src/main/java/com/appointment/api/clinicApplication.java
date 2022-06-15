@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.info.License;
 
 @Configuration
 
-@OpenAPIDefinition(info = @Info(title = "Clinic Appointment API", version = "1.0", description = "Make appointments in a simple way", license = @License(name = "Tell:+2507888", url = "https://digitalumuganda.com/"), contact = @Contact(url = "https://myclinic.com/", name = "Clinic", email = "ask@clinic.com")))
+@OpenAPIDefinition(info = @Info(title = "Clinic Appointment API", version = "1.1.0", description = "Make appointments in a simple way", license = @License(name = "Tell:+2507888", url = "https://digitalumuganda.com/"), contact = @Contact(url = "https://myclinic.com/", name = "Clinic", email = "ask@clinic.com")))
 
 @SpringBootApplication
 

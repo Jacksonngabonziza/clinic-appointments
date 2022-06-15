@@ -125,7 +125,7 @@ public class AppointmentController {
 			@ApiResponse(responseCode = "404", description = "NOt Available", content = @Content),
 			@ApiResponse(responseCode = "403", description = "Forbidden, Authorization token must be provided", content = @Content) })
 
-	@GetMapping("/appointment/phone/{phoneNumber}")
+	@GetMapping("/checkappointment/phone/{phoneNumber}")
 	public String getappointmentById(
 			@PathVariable(value = "phoneNumber") String phoneNumber)
 			throws Exception {
@@ -247,7 +247,7 @@ public class AppointmentController {
 
 			return appRepository.pendingapp("pending");
 		} else {
-			throw new AuthException("Only admin and  can view appointments data :: ");
+			throw new AuthException("restricted privelages,only the admin is allowed to this ,please approach the asdmin:: ");
 		}
 	}
 
